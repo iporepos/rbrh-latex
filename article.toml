@@ -1,0 +1,110 @@
+# ==============================================================
+# article.toml — this paper
+# ==============================================================
+# AUTHORS. Everything about the manuscript except its body text
+# and its authors: title, abstracts, keywords, highlights, and the
+# publication data the journal fills in later.
+#
+# After editing, run:
+#     python build_cover.py
+# which regenerates cover.tex. The body text lives in contents.tex.
+# ==============================================================
+
+# Language of the body text: "english" or "portuguese". Drives
+# hyphenation, dates and the journal-facing labels.
+language = "english"
+
+# true stamps every page "DRAFT" / "MINUTA" while in progress.
+draft = false
+
+type = "Case Study"
+title = "The exceptional hydrological disaster of April--May 2024 in southern Brazil"
+short_title = "RS 2024 flood disaster"
+city = "Porto Alegre"
+
+# Assigned by the journal. Leave doi empty until it exists; the
+# cover and footer drop the DOI line rather than printing a stub.
+doi = "10.1590/2318-0331.302520240119"
+volume = "30"
+issue = "2025"
+
+highlights = [
+  "An overview of the unprecedented hydrological event that occurred in the state of Rio Grande do Sul.",
+  "Record floods ran from small headwater rivers to the Patos Lagoon, which drains more than 180,000~km\\textsuperscript{2}.",
+  "The April--May hydrological event offers a glimpse of what may be expected in the coming decades due to climate change.",
+]
+
+# Declaration printed on the cover. Default is a plain negative
+# declaration; replace it if any author has something to declare.
+competing_interests = "The authors declare no competing interests."
+
+# The editor who handled this particular article.
+associated_editor = "Adilson Pinheiro"
+
+data_availability = "Data is available upon request."
+
+acknowledgements = """
+The authors wish to acknowledge CERTEL and ELERA for providing \
+data about hydropower dams. The authors wish to acknowledge \
+HidroSens research group from Universidade Federal de Pelotas for \
+the Patos Lagoon data made available."""
+
+[dates]
+published = "17 Mar 2025"
+received = "05 Nov 2024"
+reviewed = "06 Nov 2024"
+accepted = "07 Nov 2024"
+
+# RBRH prints both languages regardless of the body language.
+[abstract]
+en = """
+We present an overview of the unprecedented hydrological event \
+that occurred in Rio Grande do Sul state in late April and early \
+May 2024, causing floods and landslides in a scale that was not \
+seen before in Brazil. The rainfall that caused the disaster is \
+incomparable to any recent event in Brazil at large spatial and \
+temporal scale. The intense and long-lasting precipitation led to \
+record floods from small rivers with drainage areas below \
+1{,}000~km\\textsuperscript{2} to the Patos Lagoon, which drains \
+more than 180{,}000~km\\textsuperscript{2}. The rainfall also led \
+to landslides that rank first in Brazil in terms of spatial scale \
+and number of occurrences. Mountain rivers experienced flash \
+floods with extreme water levels, while in the lowlands the large \
+rivers and the Patos Lagoon experienced long duration flooding, \
+with stage remaining high for about 30 days. The flood event is \
+probably ranked first in terms of displaced people and damage to \
+property and infrastructure in Brazil. Almost 200 fatalities \
+occurred due to the disaster and protection structure failures. \
+The April--May hydrological event show a glimpse of what can be \
+expected along the coming decades due to climate change in a \
+region that covers South Brazil, and parts of the neighboring \
+countries."""
+
+pt = """
+Apresentamos uma visão geral do evento hidrológico sem \
+precedentes que ocorreu no estado do Rio Grande do Sul no final \
+de abril e início de maio de 2024, causando inundações e \
+movimentos de massa em uma escala nunca vista no Brasil. A \
+precipitação que causou o desastre é incomparável a qualquer \
+evento recente no país em termos de escala espacial e temporal. A \
+intensa e prolongada precipitação resultou em enchentes recordes, \
+desde pequenos rios com áreas de drenagem abaixo de \
+1.000~km\\textsuperscript{2} até a Laguna dos Patos, que drena \
+mais de 180.000~km\\textsuperscript{2}. As chuvas também levaram \
+a movimentos de massa que ocupam o primeiro lugar no Brasil em \
+termos de extensão espacial e número de ocorrências. Enchentes \
+rápidas com níveis extremos de água ocorreram em regiões \
+montanhosas, enquanto nas áreas mais baixas as cheias tiveram \
+longa duração, com os níveis de água permanecendo elevados por \
+cerca de 30 dias. Este desastre provavelmente ocupa a primeira \
+posição no Brasil em número de pessoas deslocadas e danos a \
+propriedades e infraestruturas. Quase 200 fatalidades ocorreram \
+devido ao desastre e falhas em estruturas de proteção. O evento \
+hidrológico de abril e maio oferece um vislumbre do que pode ser \
+esperado nas próximas décadas devido às mudanças climáticas em \
+uma região que abrange o Sul do Brasil e partes dos países \
+vizinhos."""
+
+[keywords]
+en = "Natural disaster; Extreme hydrological events; Exceptional floods."
+pt = "Desastre natural; Eventos hidrológicos extremos; Enchentes excepcionais."

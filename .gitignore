@@ -1,3 +1,43 @@
+.idea
+
+prompts/
+CLAUDE.md
+.claude/
+
+# ==============================================================
+# LaTeX build artifacts
+# ==============================================================
+*.acn
+*.acr
+*.alg
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.glg
+*.glo
+*.gls
+*.glsdefs
+*.ist
+*.lob
+*.lof
+*.log
+*.lot
+*.nlg
+*.nlo
+*.nls
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdy
+*.bbl-*
+# Compiled PDF: ships the manuscript, not a build artifact of this
+# repo's own CI — keep it tracked unless the maintainer decides otherwise.
+# *.pdf
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

@@ -1,0 +1,40 @@
+# ==============================================================
+# journal.toml — the journal itself
+# ==============================================================
+# EDITORS. Facts about RBRH that are the same for every article.
+# Authors should not need to touch this file.
+#
+# Edited together with article.toml and authors.toml, then run:
+#     python build_cover.py
+# which regenerates cover.tex.
+# ==============================================================
+
+name = "Revista Brasileira de Recursos Hídricos"
+name_en = "Brazilian Journal of Water Resources"
+
+# Short form used in the footer citation, e.g. "… RBRH 30. https://…"
+abbreviation = "RBRH"
+
+publisher = "ABRHidro"
+
+# Journal officer. The editor handling this particular article is
+# per-article and lives in article.toml instead.
+editor_in_chief = "Adilson Pinheiro"
+
+# Logos live in assets/ and are editor-owned. Both are placed in
+# the running header at the same height.
+logo_left = "assets/rbrh-logo.jpg"
+logo_right = "assets/abrhidro-logo.jpg"
+
+[license]
+# Shown in grey at the foot of the first-page sidebar. The badge
+# is assets/cc-by.pdf, converted from assets/cc-by.svg with
+# Inkscape -- pdfLaTeX cannot read SVG directly, so the vector PDF
+# is committed and only needs regenerating if the SVG changes.
+badge = "assets/cc-by.pdf"
+copyright = "© 2026 The Author(s)."
+statement = """
+This is an Open Access article distributed under the terms of the \
+Creative Commons Attribution License, which permits unrestricted \
+use, distribution, and reproduction in any medium, provided the \
+original work is properly cited."""

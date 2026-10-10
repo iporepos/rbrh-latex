@@ -1,0 +1,55 @@
+% ==============================================================
+% main.tex — RBRH LaTeX template
+% ==============================================================
+% ORCHESTRATOR. Nobody should need to edit this file.
+%
+% Everything that used to be set here by hand now comes from the
+% TOML files, via cover.tex:
+%
+%   journal.toml   the journal   (editors)
+%   article.toml   this paper    (title, abstracts, dates, DOI)
+%   authors.toml   who wrote it
+%
+% Edit those, then run:  python build_cover.py
+% Write the paper in contents.tex and the references in
+% references.bib.
+% ==============================================================
+\documentclass[10pt]{article}
+
+% Generated metadata. Must come before config, which reads
+% \DocLanguage and \IsDraft while it loads.
+\input{cover}
+
+\input{config}
+
+% ==============================================================
+% DOCUMENT
+% ==============================================================
+\begin{document}
+
+\columnratio{\RBRHColumnRatio}
+\begin{paracol}{2}
+
+\PrintSidebar
+
+\switchcolumn
+\PrintMasthead
+
+% --------------------------------------------------------------
+% Body: sections, figures, tables, appendices
+\input{contents}
+
+\input{appendix}
+
+\newpage
+\end{paracol}
+
+% --------------------------------------------------------------
+% References, in the wide column
+\begin{paracol}{2}
+\switchcolumn
+\auxlisttitle{\trReferences}
+\printbibliography[heading=none]
+\end{paracol}
+
+\end{document}

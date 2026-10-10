@@ -1,0 +1,175 @@
+# ==============================================================
+# authors.toml — who wrote the paper
+# ==============================================================
+# AUTHORS. One block per author, in the order they should appear
+# under the title. That order is also what the footer citation
+# uses, so the first block is the first author.
+#
+# Each block stands on its own — fill it in like a form, with
+# nothing to cross-reference. Write your affiliation out in full;
+# build_cover.py collects the affiliations, removes the
+# duplicates and numbers them by the order they first appear, so
+# authors sharing an institution automatically share a number.
+#
+#   name_first     given names, however many you use    (required)
+#   name_last      family name, as it should be sorted
+#                  and cited                            (required)
+#   affiliation    your institution, written out in full (required)
+#   email          only the corresponding author's is shown
+#   orcid          renders the ORCID mark beside your name
+#   corresponding  marks you with * and prints your contact
+#                  in the first-page sidebar
+#
+# The name is split in two so nothing has to guess where the
+# family name begins. Put the whole family name in name_last,
+# including particles and suffixes — "dos Santos", "Magalhães
+# Filho" — and it will be cited correctly.
+#
+# Add an author by copying a block; remove one by deleting it.
+# After editing, run:
+#     python build_cover.py
+# ==============================================================
+
+[[authors]]
+name_first = "Walter"
+name_last = "Collischonn"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "collischonn@iph.ufrgs.br"
+orcid = "0000-0002-7630-396X"
+corresponding = true
+
+[[authors]]
+name_first = "Fernando Mainardi"
+name_last = "Fan"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "fernando.fan@ufrgs.br"
+orcid = "0000-0003-0371-7851"
+
+[[authors]]
+name_first = "Iporã"
+name_last = "Possantti"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "possantti@gmail.com"
+orcid = "0000-0002-2194-4516"
+
+[[authors]]
+name_first = "Fernando"
+name_last = "Dornelles"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "fernando.dornelles@ufrgs.br"
+
+[[authors]]
+name_first = "Rodrigo"
+name_last = "Paiva"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "rodrigo.paiva@ufrgs.br"
+
+[[authors]]
+name_first = "Matheus Sampaio"
+name_last = "Medeiros"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "matheussampaiomedeiros@gmail.com"
+
+[[authors]]
+name_first = "Gean Paulo"
+name_last = "Michel"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "gean.michel@ufrgs.br"
+
+[[authors]]
+name_first = "Fernando Jorge Corrêa"
+name_last = "Magalhães Filho"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "fernando.magalhaes@ufrgs.br"
+
+[[authors]]
+name_first = "Sofia Royer"
+name_last = "Moraes"
+affiliation = "Universidade do Vale do Taquari, Porto Alegre, RS, Brazil"
+email = "sofiaroyermoraes@gmail.com"
+
+[[authors]]
+name_first = "Francisco Fernando Noronha"
+name_last = "Marcuzzo"
+affiliation = "Serviço Geológico do Brasil, Porto Alegre, RS, Brazil"
+email = "francisco.marcuzzo@sgb.gov.br"
+
+[[authors]]
+name_first = "Rossano Dalla Lana"
+name_last = "Michel"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "rossanodlm@gmail.com"
+
+[[authors]]
+name_first = "Tamara Leitzke Caldeira"
+name_last = "Beskow"
+affiliation = "Universidade Federal de Pelotas, Pelotas, RS, Brazil"
+email = "tamaraleitzkecaldeira@gmail.com"
+
+[[authors]]
+name_first = "Samuel"
+name_last = "Beskow"
+affiliation = "Universidade Federal de Pelotas, Pelotas, RS, Brazil"
+email = "samuelbeskow@gmail.com"
+
+[[authors]]
+name_first = "Elisa Helena Leão"
+name_last = "Fernandes"
+affiliation = "Universidade Federal do Rio Grande, Rio Grande, RS, Brazil"
+# The source lists the same address as Samuel Beskow above;
+# kept as given rather than guessed at.
+email = "samuelbeskow@gmail.com"
+
+[[authors]]
+name_first = "Leonardo Laipelt"
+name_last = "dos Santos"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "leolaipelt@gmail.com"
+
+[[authors]]
+name_first = "Anderson"
+name_last = "Ruhoff"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "andersonruhoff@gmail.com"
+
+[[authors]]
+name_first = "Masato"
+name_last = "Kobiyama"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "masato.kobiyama@ufrgs.br"
+
+[[authors]]
+name_first = "Gilberto Loguercio"
+name_last = "Collares"
+affiliation = "Universidade Federal de Pelotas, Pelotas, RS, Brazil"
+email = "gilbertocollares@gmail.com"
+
+[[authors]]
+name_first = "Franco"
+name_last = "Buffon"
+affiliation = "Serviço Geológico do Brasil, Porto Alegre, RS, Brazil"
+email = "franco.buffon@sgb.gov.br"
+
+[[authors]]
+name_first = "Emanuel"
+name_last = "Duarte"
+affiliation = "Serviço Geológico do Brasil, Porto Alegre, RS, Brazil"
+email = "emanuel.duarte@sgb.gov.br"
+
+[[authors]]
+name_first = "Stefany"
+name_last = "Lima"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "stefglima@gmail.com"
+
+[[authors]]
+name_first = "Fernando Setembrino Cruz"
+name_last = "Meirelles"
+affiliation = "Universidade Federal do Rio Grande do Sul, Porto Alegre, RS, Brazil"
+email = "fernando@iph.ufrgs.br"
+
+[[authors]]
+name_first = "Daniel Gustavo Allasia"
+name_last = "Piccilli"
+affiliation = "Universidade Federal de Santa Maria, Santa Maria, RS, Brazil"
+email = "dallasia@gmail.com"

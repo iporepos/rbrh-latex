@@ -1,0 +1,47 @@
+
+
+\section{Rain gauge dataset} \label{app:rainfall}
+
+Describe the first dataset here: where it came from, how it was
+processed, and any caveats a reader would need in order to reuse
+it.
+
+\lipsum[21]
+
+% [ht] instead of the default [t]: an appendix float left to
+% drift to the top of the page can end up printed above its own
+% section heading. This is the optional position argument in use.
+\begin{TableM}[ht]{%
+  Structure of the rain gauge dataset: one record per gauge and
+  day.%
+}{tbl:app:rainfall}
+\scriptsize
+\sffamily
+\begin{tabularx}{\linewidth}{LLL}
+\toprule
+\textbf{Field} & \textbf{Unit} & \textbf{Description} \\
+\midrule
+\texttt{gauge\_id} & ---    & Station identifier \\
+\texttt{date}      & ---    & Observation date, ISO 8601 \\
+\texttt{rainfall}  & mm     & Daily accumulated rainfall \\
+\texttt{quality}   & ---    & Quality flag, 0--3 \\
+\bottomrule
+\end{tabularx}
+\end{TableM}
+
+\lipsum[22]
+
+\section{Streamflow dataset} \label{app:streamflow}
+
+Describe the second dataset here, following the same pattern.
+\Cref{fig:app:forecast} shows that figures and tables inside an
+appendix pick up lettered numbering automatically.
+
+\lipsum[23]
+
+\FigureM[ht]{figure_66}{%
+  Supplementary precipitation forecasts for the April--May 2024
+  event. See \Cref{fig:forecast} for model and date details.%
+}{fig:app:forecast}
+
+\lipsum[24]

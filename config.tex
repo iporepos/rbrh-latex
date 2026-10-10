@@ -1,0 +1,932 @@
+% ==============================================================
+% config.tex — RBRH LaTeX template
+% ==============================================================
+% EDITORS ONLY. Authors should never need to open this file.
+%
+% Owns: packages, language switch, fonts, bibliography engine,
+% colors, header/footer, journal-facing translations, page
+% layout, the two-column "camera-ready" paracol skeleton, title
+% and author-block formatting, the author-facing figure and table
+% macros, and all typographic styling (sections, captions,
+% theorems, listings, admonitions, boxes, watermark, appendix
+% renumbering).
+%
+% Ported from a real accepted RBRH submission (legacy source in
+% prompts/inputs/ABRH, Collischonn et al. 2025, DOI
+% 10.1590/2318-0331.302520240119), stripped of the unrelated
+% business-proposal apparatus (parties, payment, signatures,
+% protocols, authorization, services, team) that lived alongside
+% it in the original "DocumentTeX" framework.
+% ==============================================================
+
+% \DocLanguage controls journal-facing labels (see Translations,
+% below) and hyphenation. main.tex sets it before \input{config};
+% this \providecommand only guards against main.tex forgetting to,
+% and matches the template's own default: the document is English.
+\providecommand{\DocLanguage}{english}
+
+% ==============================================================
+% 1. PACKAGES
+% ==============================================================
+
+% --------------------------------------------------------------
+% Fonts
+% Times (serif, body text + math) + Helvetica (sans, headings/
+% captions) + Source Code Pro (mono, verbatim/lstlisting).
+% All bundled with standard TeX Live; compatible with pdfLaTeX.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}                    % Times, incl. matching math glyphs
+\usepackage[scaled=0.92]{helvet}         % Helvetica
+% Source Code Pro has a tall x-height and reads a size larger than
+% Times beside it, so it is scaled down to match rather than left
+% to dominate every \texttt and listing.
+\usepackage[scaled=0.85]{sourcecodepro}
+
+% --------------------------------------------------------------
+% Math and symbols
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{textcomp}
+
+% --------------------------------------------------------------
+% Language, references and datetime
+% cleveref and hyperref load last, after babel, per their
+% required order: babel -> cleveref -> hyperref.
+% Both languages are loaded, and \DocLanguage picks the MAIN one.
+% "main=" is what actually decides the document language: babel
+% otherwise takes the last language in the option list as main and
+% re-asserts it at \begin{document}, overriding any preamble
+% \selectlanguage. That is what kept captions reading "Figura" and
+% the footer date in Portuguese under \DocLanguage=english.
+% The option list has to be built by \edef first, because package
+% options are not expanded when \usepackage reads them.
+\edef\RBRHbabelopts{main=\DocLanguage,english,portuguese}
+\expandafter\PassOptionsToPackage\expandafter{\RBRHbabelopts}{babel}
+\usepackage{babel}
+\usepackage[useregional]{datetime2}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+% --------------------------------------------------------------
+% Colors
+\usepackage[dvipsnames, table]{xcolor}
+
+% --------------------------------------------------------------
+% Layout
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{paracol}                     % the two-column "sidebar + content" skeleton
+
+% --------------------------------------------------------------
+% Bibliography
+% APA style with author-year citations, biber backend. Authors
+% cite with \textcite{} in prose and \parencite{} in parentheses.
+\usepackage[backend=biber, style=apa, citestyle=authoryear]{biblatex}
+
+% --------------------------------------------------------------
+% Sections
+\usepackage{etoolbox}
+
+% --------------------------------------------------------------
+% Text
+\usepackage{lipsum}                      % placeholder text only; not needed once authors write
+
+% --------------------------------------------------------------
+% Captions
+\usepackage{caption}
+
+% --------------------------------------------------------------
+% Figures
+\usepackage{graphicx}
+
+% --------------------------------------------------------------
+% Tables
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+% tabularx so a table can be told to occupy exactly the width it
+% is given. threeparttable sizes the caption and the notes to the
+% width of the tabular, so a table that fills \linewidth is what
+% keeps both flush with the text column instead of ending short.
+\usepackage{tabularx}
+% Left-aligned flexible column: the X column, minus the centring.
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+% --------------------------------------------------------------
+% Boxes
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable}
+
+% --------------------------------------------------------------
+% Listings
+\usepackage{listings}
+
+% --------------------------------------------------------------
+% Misc
+\usepackage{fontawesome5}                % admonition icons
+% ORCID mark for the author list. Draws the official logo as
+% vector paths rather than embedding an SVG, which pdfLaTeX
+% cannot do without --shell-escape. It scales the mark to the
+% current font's X-height, so it sits inside the line and cannot
+% change the leading, and it makes the icon itself the hyperlink.
+\usepackage{orcidlink}
+
+% ==============================================================
+% 2. LANGUAGE SWITCH
+% ==============================================================
+% Nothing to do here: the document language is set by babel's
+% "main=" option in section 1, which is the only thing that
+% survives \begin{document}. It drives hyphenation, babel-aware
+% dates (datetime2 [useregional]), quoting (csquotes) and the
+% caption words ("Figure"/"Figura", "Table"/"Tabela").
+%
+% A preamble \selectlanguage used to sit here and did nothing:
+% babel overrode it on entering the document body.
+
+% ==============================================================
+% 3. TRANSLATIONS
+% ==============================================================
+% Journal-facing labels, in Portuguese or English depending on
+% \DocLanguage. Authors reference these by name (e.g. \trAbstract)
+% rather than hardcoding either language, so the whole document
+% switches with one macro.
+% \ifx rather than etoolbox's \ifdefstring: \ifx is expandable, so
+% \trlang survives \MakeUppercase. With \ifdefstring the conditional
+% gets mangled during uppercasing and the wrong branch wins -- that
+% is what made the sidebar print "ESTUDO DE CASO" under english.
+%
+% Both sides are normalised into plain macros first. \ifx compares
+% meanings, and \newcommand makes \DocLanguage \long while a bare
+% \def would not -- comparing them directly fails on that prefix
+% alone and silently selects Portuguese. \edef flattens whatever
+% the author wrote into the same shape as \RBRHenglish.
+%
+% No "@" in these names: this is a .tex file, not a .sty, so @ is
+% not a letter here and \RBRHxx@yy would parse as \RBRHxx followed
+% by stray characters.
+\edef\RBRHlang{\DocLanguage}
+\def\RBRHenglish{english}
+\newcommand{\trlang}[2]{\ifx\RBRHlang\RBRHenglish #1\else #2\fi}
+
+% --- Front matter ---
+\newcommand{\trAbstract}{\trlang{Abstract}{Resumo}}
+\newcommand{\trKeywords}{\trlang{Keywords}{Palavras-chave}}
+\newcommand{\trListOfBoxes}{\trlang{Boxes}{Destaques}}
+\newcommand{\trHighlights}{\trlang{Highlights}{Destaques do estudo}}
+\newcommand{\trCorrespondence}{\trlang{Correspondence to}{Correspond\^encia para}}
+\newcommand{\trCitation}{\trlang{Citation}{Como citar}}
+
+% --- Cover sidebar ---
+\newcommand{\trEditors}{\trlang{Editors}{Editores}}
+\newcommand{\trEditorInChief}{\trlang{Editor-in-Chief}{Editor-chefe}}
+\newcommand{\trAssociatedEditor}{\trlang{Associated Editor}{Editor associado}}
+\newcommand{\trCompetingInterests}{\trlang{Competing interests}{Conflito de interesses}}
+\newcommand{\trDataAvailability}{\trlang{Data availability}{Disponibilidade dos dados}}
+\newcommand{\trPublicationDates}{\trlang{Publication dates}{Datas de publica\c{c}\~ao}}
+\newcommand{\trPublished}{\trlang{Published}{Publicado em}}
+\newcommand{\trIssue}{\trlang{Issue}{Edi\c{c}\~ao}}
+\newcommand{\trHistory}{\trlang{History}{Hist\'orico}}
+\newcommand{\trReceived}{\trlang{Received}{Recebido em}}
+\newcommand{\trReviewed}{\trlang{Reviewed}{Revisado em}}
+\newcommand{\trAccepted}{\trlang{Accepted}{Aceito em}}
+
+% --- Back matter ---
+\newcommand{\trReferences}{\trlang{References}{Refer\^encias}}
+\newcommand{\trAppendix}{\trlang{Appendix}{Ap\^endice}}
+\newcommand{\trAppendices}{\trlang{Appendices}{Ap\^endices}}
+\newcommand{\trAcknowledgements}{\trlang{Acknowledgements}{Agradecimentos}}
+
+% --- Items ---
+\newcommand{\trListing}{\trlang{Code}{C\'odigo}}
+\newcommand{\trListings}{\trlang{Code}{C\'odigos}}
+\newcommand{\trDraft}{\trlang{DRAFT}{MINUTA}}
+
+% --- Admonitions ---
+\newcommand{\trAdmNote}{\trlang{Note}{Nota}}
+\newcommand{\trAdmTip}{\trlang{Tip}{Dica}}
+\newcommand{\trAdmImportant}{\trlang{Important}{Importante}}
+\newcommand{\trAdmWarning}{\trlang{Warning}{Alerta}}
+\newcommand{\trAdmCaution}{\trlang{Caution}{Cuidado}}
+
+% ==============================================================
+% 4. COLORS
+% ==============================================================
+% Override this section to apply a different brand/theme.
+
+% --- Grayscale utilities ---
+\definecolor{verylightgray}{gray}{0.97}
+\definecolor{lightgray}{gray}{0.85}
+\definecolor{midgray}{gray}{0.50}
+\definecolor{heavygray}{gray}{0.3}
+
+% --- Brand / accent ---
+% The journal's blue is the accent colour: it carries the article
+% title, the section headings, the abstract headings and the
+% metadata column. The masthead itself is set in black, so the
+% blue marks structure rather than branding.
+%
+% Everything already keyed to AccentColor follows from here --
+% caption labels, theorem heads and the tcolorbox palette, whose
+% tints derive from it.
+\definecolor{AccentColor}{RGB}{38,52,139}
+\colorlet{AccentColorVeryLight}{AccentColor!5}
+\colorlet{AccentColorLight}{AccentColor!20}
+
+% --- Semantic aliases ---
+\definecolor{HeadingColor}{named}{AccentColor}
+\definecolor{LinkColor}{RGB}{38,52,139}
+\definecolor{RuleColor}{named}{midgray}
+\definecolor{TextColor}{named}{black}
+
+% --- Page and text ---
+\pagecolor{white}
+\color{TextColor}
+
+% --- Links ---
+\hypersetup{
+    colorlinks=true,
+    linkcolor=LinkColor,
+    citecolor=LinkColor,
+    filecolor=LinkColor,
+    urlcolor=LinkColor,
+}
+
+% ==============================================================
+% 5. HEADER AND FOOTER
+% ==============================================================
+% Every field comes from cover.tex, which build_cover.py generates
+% from the TOML files. Both journal logos sit in the running
+% header at the same height, one at each margin; the footer
+% carries the short citation on the left and the page count on
+% the right.
+\newcommand{\RBRHlogoheight}{8mm}
+\newcommand{\HeaderLeft}{\includegraphics[height=\RBRHlogoheight]{\JournalLogoLeft}}
+\newcommand{\HeaderRight}{\includegraphics[height=\RBRHlogoheight]{\JournalLogoRight}}
+\newcommand{\FooterLeft}{\ArticleShortCitation}
+\newcommand{\FooterCenter}{}
+\newcommand{\FooterRight}{\thepage\;/\;\pageref{LastPage}}
+
+\fancyhfoffset[L]{0mm}
+\fancyhfoffset[R]{0mm}
+
+\fancypagestyle{plain}{%
+  \fancyhf{}
+  \fancyhead[L]{\HeaderLeft}
+  \fancyhead[R]{\HeaderRight}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \fancyfoot[L]{\sffamily\scriptsize{\FooterLeft}}
+  \fancyfoot[C]{\sffamily\scriptsize{\FooterCenter}}
+  \fancyfoot[R]{\sffamily\scriptsize{\FooterRight}}
+  \renewcommand{\footrulewidth}{0.2pt}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\HeaderLeft}
+\fancyhead[R]{\HeaderRight}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyfoot[L]{\sffamily\scriptsize{\FooterLeft}}
+\fancyfoot[C]{\sffamily\scriptsize{\FooterCenter}}
+\fancyfoot[R]{\sffamily\scriptsize{\FooterRight}}
+\renewcommand{\footrulewidth}{0.2pt}
+
+% ==============================================================
+% 6. PAGE LAYOUT AND SPACING
+% ==============================================================
+\geometry{
+ a4paper,
+ left=20mm,
+ right=20mm,
+ top=20mm,
+ includefoot,
+ bottom=20mm,
+ headheight=15mm,
+ headsep=5mm,
+ footskip=10mm,
+}
+
+\newcommand{\pagesectionvspace}{\vspace*{0mm}}
+
+\setlength{\parindent}{0mm}
+\setlength{\parskip}{2mm}
+
+\setlength{\intextsep}{1mm}
+\setlength{\textfloatsep}{2mm}
+\setlength{\floatsep}{2mm}
+\setlength{\abovecaptionskip}{1mm}
+\setlength{\belowcaptionskip}{0mm}
+
+\linespread{1}
+
+\titlespacing*{\section}      {0mm}{4mm}{0mm}
+\titlespacing*{\subsection}   {0mm}{2mm}{0mm}
+\titlespacing*{\subsubsection}{0mm}{2mm}{0mm}
+\titlespacing{\paragraph}{0mm}{2mm}{2mm}
+
+% --------------------------------------------------------------
+% Camera-ready sidebar column (left, narrow) + content column
+% (right, wide). Width tuned for the DOI/highlights/correspondence
+% sidebar used by main.tex; adjust \RBRHColumnRatio to change it.
+\newcommand{\RBRHColumnRatio}{0.258}
+
+% Lengths for the small-with-side-caption figure pattern (see
+% contents.tex): a small, fixed-size image whose caption spans
+% into the space the narrow sidebar column would otherwise
+% occupy. Allocated once here; reused via \setlength (not
+% \newlength) at the use site.
+\newlength{\sidecapimgwidth}
+\newlength{\sidecapgap}
+\newlength{\sidecapwidth}
+\newlength{\smallfigfixedwidth}
+
+% ==============================================================
+% 7. BIBLIOGRAPHY RESOURCES
+% ==============================================================
+\addbibresource{references.bib}
+% Reference list one size down from the body text.
+\renewcommand*{\bibfont}{\small}
+
+% ==============================================================
+% 8. CAPTIONS
+% ==============================================================
+\DeclareCaptionLabelSeparator{pipe}{\;|\;}
+
+\captionsetup[figure]{
+    font={footnotesize, sf, color=heavygray},
+    labelfont={bf, color=AccentColor},
+    labelsep=quad,
+}
+
+% No "width=" here. Inside paracol \textwidth is still the full
+% page width, not the width of the column being typeset, so
+% width=\textwidth made table captions overrun the text column and
+% spill into the sidebar. Left unset, the caption takes the width
+% of whatever contains it -- the text column for TableM, the full
+% span for TableL -- which is right in both cases.
+\captionsetup[table]{
+    font={footnotesize, sf},
+    labelfont={bf, color=AccentColor},
+    labelsep=pipe,
+}
+
+\DeclareCaptionStyle{lstlisting}{
+    font={footnotesize, sf},
+    labelfont={bf, color=AccentColor},
+    labelsep=pipe,
+    justification=centering
+}
+\captionsetup[lstlisting]{style=lstlisting}
+
+% All captions: justified, flush left, regardless of length.
+% singlelinecheck=false disables caption's default of auto-centering
+% any caption that happens to fit on a single line.
+\captionsetup{justification=justified,singlelinecheck=false,labelfont=bf}
+
+% ==============================================================
+% 9. SECTION TITLES
+% ==============================================================
+\titleformat{\section}
+  {\bfseries\sffamily\Large\color{HeadingColor}}
+  {\makebox[8mm][l]{\thesection}}{2mm}{}
+
+\titleformat{\subsection}
+  {\bfseries\sffamily\large\color{HeadingColor}}
+  {\makebox[8mm][l]{\thesubsection}}{2mm}{}
+
+\titleformat{\subsubsection}
+  {\sffamily\normalsize\color{HeadingColor}}
+  {\makebox[10mm][l]{\thesubsubsection}}{4mm}{}
+
+\titleformat{\paragraph}[runin]
+  {\bfseries\sffamily\normalsize\color{HeadingColor}}
+  {}{0mm}{}[.]
+
+% Shared heading for auxiliary lists (References, List of Boxes,
+% Glossary, ...) so they match the plain \section* styling used
+% by \tableofcontents / \listoffigures / \listoftables, instead of
+% falling back to each package's own internal heading.
+\newcommand{\auxlisttitle}[1]{%
+  \begingroup
+    \titlespacing*{\section}{0mm}{6mm}{2mm}%
+    \section*{#1}%
+  \endgroup
+  \phantomsection
+  \addcontentsline{toc}{section}{#1}%
+}
+
+% ==============================================================
+% 10. THEOREM-LIKE ENVIRONMENTS
+% ==============================================================
+\providecommand{\theoremname}{\trlang{Theorem}{Teorema}}
+\providecommand{\lemmaname}{\trlang{Lemma}{Lema}}
+\providecommand{\corollaryname}{\trlang{Corollary}{Corol\'ario}}
+\providecommand{\definitionname}{\trlang{Definition}{Defini\c{c}\~ao}}
+\providecommand{\examplename}{\trlang{Example}{Exemplo}}
+\providecommand{\remarkname}{\trlang{Remark}{Observa\c{c}\~ao}}
+
+\makeatletter
+\renewcommand{\th@plain}{%
+    \thm@headfont{\bfseries\sffamily\color{AccentColor}}%
+    \itshape
+}
+\renewcommand{\th@definition}{%
+    \thm@headfont{\bfseries\sffamily\color{AccentColor}}%
+    \normalfont
+}
+\renewcommand{\th@remark}{%
+    \thm@headfont{\itshape\sffamily\color{AccentColor}}%
+    \normalfont
+}
+\makeatother
+
+\newtheorem{theorem}{\theoremname}
+\newtheorem{lemma}[theorem]{\lemmaname}
+\newtheorem{corollary}[theorem]{\corollaryname}
+\newtheorem{definition}{\definitionname}
+\newtheorem{example}{\examplename}
+\newtheorem*{remark}{\remarkname}
+
+% ==============================================================
+% 11. LISTINGS
+% ==============================================================
+\renewcommand{\lstlistingname}{\trListing}
+\crefname{lstlisting}{\trListing}{\trListings}
+\Crefname{lstlisting}{\trListing}{\trListings}
+
+\lstdefinestyle{codeblock}{
+    backgroundcolor=\color{black!5},
+    commentstyle=\color{black!40}\itshape,
+    keywordstyle=\color{purple}\bfseries,
+    stringstyle=\color{teal},
+    numberstyle=\tiny\color{black!40},
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    breakatwhitespace=true,
+    postbreak=\mbox{\textcolor{gray}{$\hookrightarrow$}\space},
+    numbersep=8pt,
+    tabsize=4,
+    keepspaces=true,
+    frame=none,
+    captionpos=b,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    numbers=left,
+}
+\lstset{style=codeblock, language=Python}
+\lstset{basicstyle=\ttfamily\footnotesize}
+\renewcommand{\ttdefault}{SourceCodePro-TLF}
+\renewcommand{\familydefault}{\rmdefault}
+
+% ==============================================================
+% 12. BOXES
+% ==============================================================
+\tcbset{
+    boxbasestyle/.style={
+        enhanced,
+        breakable,
+        colback      = AccentColorVeryLight,
+        colbacktitle = AccentColorLight,
+        coltitle     = AccentColor,
+        colframe     = AccentColor,
+        boxrule      = 0.5pt,
+        arc          = 2pt,
+        fonttitle    = \bfseries\sffamily\small,
+        fontupper    = \sffamily\footnotesize,
+        boxsep       = 0mm,
+        top          = 2mm,
+        bottom       = 2mm,
+        left         = 2mm,
+        right        = 2mm,
+        toptitle     = 1mm,
+        bottomtitle  = 1mm,
+    }
+}
+
+% boxstory — numbered, breakable, document-wide counter.
+% Usage: \begin{boxstory}{Title} ... \end{boxstory}
+\newtcolorbox[
+    auto counter,
+    list inside = lob,
+]{boxstory}[2][]{
+    boxbasestyle,
+    title = {\sffamily Box~\thetcbcounter\quad #2},
+    #1,
+}
+
+\newcommand{\notitleheading}[1]{}
+\newcommand{\listofboxes}{%
+    \auxlisttitle{\trListOfBoxes}%
+    \tcblistof[\notitleheading]{lob}{\trListOfBoxes}%
+}
+
+% ==============================================================
+% 13. ADMONITIONS
+% ==============================================================
+% Color-coded unnumbered admonition boxes. Icons require fontawesome5.
+\newtcolorbox{amdnote}{
+    boxbasestyle,
+    colback = cyan!5, colbacktitle = cyan!50!black, colframe = cyan!50!black,
+    coltitle = white, title = {\faInfoCircle\quad \trAdmNote},
+}
+\newtcolorbox{amdtip}{
+    boxbasestyle,
+    colback = green!5!white, colbacktitle = green!40!black, colframe = green!40!black,
+    coltitle = white, title = {\faLightbulb\quad \trAdmTip},
+}
+\newtcolorbox{amdimportant}{
+    boxbasestyle,
+    colback = violet!5, colbacktitle = violet!60!black, colframe = violet!60!black,
+    coltitle = white, title = {\faExclamationCircle\quad \trAdmImportant},
+}
+\newtcolorbox{amdwarning}{
+    boxbasestyle,
+    colback = orange!5, colbacktitle = orange!70!black, colframe = orange!70!black,
+    coltitle = white, title = {\faExclamationTriangle\quad \trAdmWarning},
+}
+\newtcolorbox{amdcaution}{
+    boxbasestyle,
+    colback = red!5, colbacktitle = red!70!black, colframe = red!70!black,
+    coltitle = white, title = {\faBan\quad \trAdmCaution},
+}
+
+% ==============================================================
+% 14. DRAFT WATERMARK
+% ==============================================================
+% main.tex sets \IsDraft to "true" to stamp every page "DRAFT" /
+% "MINUTA" while the manuscript is a work in progress.
+\providecommand{\IsDraft}{false}
+\ifdefstring{\IsDraft}{true}{
+    \usepackage{draftwatermark}
+    \SetWatermarkText{\trDraft}
+    \SetWatermarkScale{1}
+    \SetWatermarkColor[gray]{0.8}
+    \SetWatermarkAngle{30}
+}{}
+
+% ==============================================================
+% 15. COVER
+% ==============================================================
+% Everything here reads macros defined in cover.tex, which
+% build_cover.py generates from journal.toml, article.toml and
+% authors.toml. Nothing on the cover is written by hand, which is
+% why contents.tex can begin straight at the first section.
+%
+% \PrintMasthead fills the wide column: journal name, title,
+% authors, affiliations, then both abstracts. \PrintSidebar fills
+% the narrow one, in the order RBRH prints it.
+
+% The author and affiliation blocks are long runs of proper nouns
+% and institution names, which offer TeX very few legal break
+% points. On the default settings the author list overflowed the
+% column by about 10pt.
+%
+% Justified was tried first and does fix the overflow, with
+% \tolerance raised and \emergencystretch added -- but it pays for
+% it by hyphenating personal names across lines ("An-derson",
+% "Fer-nando") and by leaving one very loose line. Breaking a
+% surname is not acceptable in a masthead, so these blocks are set
+% ragged right instead, with hyphenation switched off outright.
+% The right edge is uneven; nothing overflows and no name breaks.
+%
+% To go back to justified, swap \raggedright and the two penalties
+% for: \tolerance=4000 \emergencystretch=2em
+%
+% These are paragraph-breaking parameters, so they only take
+% effect if the paragraph ends while they are still in scope --
+% hence the \par inside each group below.
+\newcommand{\RBRHnameblock}{%
+  \raggedright
+  \hyphenpenalty=10000
+  \exhyphenpenalty=10000
+}
+
+% --- Wide column ---
+\newcommand{\PrintMasthead}{%
+  {\noindent \sffamily \Large\textbf{\JournalName}}\\
+  {\noindent \large \textit{\JournalNameEn}}\\[3mm]
+  \begin{center}
+    \raggedright {\Large \sffamily \textbf{\color{AccentColor}\ArticleTitle}}\\[3mm]
+  \end{center}
+  {\RBRHnameblock\noindent\AuthorBlock\par}
+  \vspace{2mm}
+  % Affiliations in the same grey as the captions, so they read as
+  % secondary to the author names without fading out like the
+  % licence notice does.
+  {\footnotesize\color{heavygray}\RBRHnameblock\noindent\AffiliationBlock\par}
+  \vspace{2mm}
+  \hrule
+  \vspace{2mm}
+  \PrintAbstracts
+}
+
+% Both languages are printed whatever \DocLanguage says: RBRH
+% carries an English abstract and a Portuguese resumo regardless
+% of the language the body is written in.
+% The \small applies to the heading words only -- "Abstract",
+% "Keywords:" and their Portuguese counterparts, which were
+% sitting at full body size. The abstract text itself stays at
+% \footnotesize.
+\newcommand{\PrintAbstracts}{%
+  \begin{spacing}{0.8}
+  \small
+  {\noindent \sffamily\textbf{\color{AccentColor}Abstract}\quad{\footnotesize\color{TextColor} \AbstractEn}}\\[1mm]
+  {\noindent \sffamily\textbf{\color{AccentColor}Keywords:}\quad{\footnotesize\color{TextColor} \KeywordsEn}}\\[3mm]
+  {\noindent \sffamily\textbf{\color{AccentColor}Resumo}\quad{\footnotesize\color{TextColor} \AbstractPt}}\\[1mm]
+  {\noindent \sffamily\textbf{\color{AccentColor}Palavras-chave:}\quad{\footnotesize\color{TextColor} \KeywordsPt}}
+  \end{spacing}
+}
+
+% --- Narrow column ---
+% One helper per block, so the running order is readable and can
+% be reshuffled by editing \PrintSidebar alone.
+% The accent marks the structure of the column -- the heading of
+% each block -- while the content under it stays in body colour.
+\newcommand{\RBRHcoverblock}[2]{%
+  {\color{AccentColor}\textbf{#1}}\\[1mm]
+  #2
+  \\[4mm]
+}
+
+\newcommand{\PrintSidebar}{%
+  {
+  \sffamily
+  \scriptsize
+  \raggedright
+  % licence block at the foot overrides it with grey.
+  \textbf{\MakeUppercase{\ArticleType}}\\
+  \ifdefempty{\ArticleDOI}{}{DOI\;\ArticleDOI\\[4mm]}
+  \RBRHcoverblock{\trHighlights:}{\ArticleHighlights}
+  \RBRHcoverblock{\trCitation:}{\ArticleCitation}
+  \RBRHcoverblock{\trCorrespondence:}{\CorrespondingBlock}
+  \RBRHcoverblock{\trCompetingInterests:}{\CompetingInterests}
+  \RBRHcoverblock{\trAcknowledgements:}{\Acknowledgements}
+  \RBRHcoverblock{\trEditors:}{%
+    \trEditorInChief:\\ \EditorInChief\\[1mm]
+    \trAssociatedEditor:\\ \AssociatedEditor}
+  \RBRHcoverblock{\trDataAvailability:}{\DataAvailability}
+  \RBRHcoverblock{\trPublicationDates:}{%
+    \trPublished\ \DatePublished\\
+    \trIssue\ \ArticleIssue}
+  \RBRHcoverblock{\trHistory:}{%
+    \trReceived\ \DateReceived\\
+    \trReviewed\ \DateReviewed\\
+    \trAccepted\ \DateAccepted}
+  % Push the licence to the foot of the column: everything above
+  % sets at its natural height and this absorbs the slack, so the
+  % notice sits on the baseline of the page however much or little
+  % metadata precedes it.
+  \vfill
+  \PrintLicense
+  }
+}
+
+% CC-BY notice, set in grey so it reads as a footer to the
+% sidebar rather than as content. The badge is a vector PDF
+% converted from assets/cc-by.svg.
+\newcommand{\PrintLicense}{%
+  {\color{midgray}
+   \includegraphics[height=3.2mm]{\LicenseBadge}\\[1mm]
+   \LicenseCopyright\\
+   \LicenseStatement\par}
+}
+
+% ==============================================================
+% 16. APPENDIX RENUMBERING
+% ==============================================================
+% Call \BeginAppendix in contents.tex to switch into lettered,
+% restarted numbering (A, A.1, Figure A.1, ...) for supplementary
+% material.
+\newcommand{\BeginAppendix}{%
+  \appendix
+  \renewcommand{\thesection}{\Alph{section}}
+  \renewcommand{\thesubsection}{\Alph{section}.\arabic{subsection}}
+  \renewcommand{\thesubsubsection}{\Alph{section}.\arabic{subsection}.\arabic{subsubsection}}
+  \setcounter{section}{0}
+  \setcounter{equation}{0}
+  \setcounter{figure}{0}
+  \setcounter{table}{0}
+  \setcounter{lstlisting}{0}
+  \renewcommand{\theequation}{\Alph{section}.\arabic{equation}}
+  \renewcommand{\thefigure}{\Alph{section}.\arabic{figure}}
+  \renewcommand{\thetable}{\Alph{section}.\arabic{table}}
+  \renewcommand{\thelstlisting}{\Alph{section}.\arabic{lstlisting}}
+  \pagesectionvspace
+  \auxlisttitle{\trAppendices}
+  \label{sec:appendix}
+  \vspace{10mm}
+  \small
+  % Headings one level down too. The body is already \small, which
+  % left \Large section titles looking oversized against it.
+  \titleformat{\section}
+    {\bfseries\sffamily\large\color{HeadingColor}}
+    {\makebox[8mm][l]{\thesection}}{2mm}{}
+  \titleformat{\subsection}
+    {\bfseries\sffamily\normalsize\color{HeadingColor}}
+    {\makebox[8mm][l]{\thesubsection}}{2mm}{}
+  \titleformat{\subsubsection}
+    {\sffamily\small\color{HeadingColor}}
+    {\makebox[10mm][l]{\thesubsubsection}}{4mm}{}
+}
+
+% ==============================================================
+% 17. SHARED COUNTERS ACROSS PARACOL COLUMNS
+% ==============================================================
+% paracol makes every counter column-LOCAL by default -- its
+% internal list of global counters ships as just {page}. Each
+% column therefore keeps its own `figure`, `table` and `equation`.
+% A figure written inside a column and one written in a
+% \switchcolumn[1]*[...] spanning block are stepped in different
+% counter states, so the spanning one restarts at 1 and the
+% numbering appears to repeat. `figure` is shared instead: the two
+% columns here are a metadata sidebar plus one article body, not
+% parallel independent texts.
+%
+% Name the counter explicitly -- do NOT use \globalcounter*, and
+% do NOT add `table` here. Both were tried and both break this
+% document with "Missing \endcsname inserted" at the first
+% \section (the starred form because it sweeps in every counter,
+% including `table`). Bisected against this exact package set:
+%   figure   -> safe, and is what fixes the numbering bug
+%   equation -> safe, but unused; add only if an equation ever
+%               goes inside a \switchcolumn[1]*[...] span
+%   table    -> BREAKS the build, do not enable
+% `footnote` is left alone too: paracol manages its scope itself.
+\globalcounter{figure}
+
+% ==============================================================
+% 18. AUTHOR-FACING FIGURE AND TABLE MACROS
+% ==============================================================
+% So contents.tex never carries layout plumbing:
+%
+%   \FigureM[pos]{name}{caption}{label}        text width
+%   \FigureS[pos][frac]{name}{caption}{label}  small -- frac of the
+%                                              text width, default
+%                                              0.67 -- and the only
+%                                              size whose caption
+%                                              sits beside the
+%                                              image, spanning into
+%                                              the sidebar column
+%   \FigureL[pos]{name}{caption}{label}        full width, margin to
+%                                              margin, matching the
+%                                              width of the header
+%                                              rule
+%
+%   \begin{TableM}[pos]{caption}{label} ... \end{TableM}  text width
+%   \begin{TableL}[pos]{caption}{label} ... \end{TableL}  full width
+%
+% [pos] is the usual LaTeX float placement specifier and defaults
+% to t (top). The table environments take the tabular material as
+% their body and put the caption above it, per table convention;
+% figures caption below.
+%
+% <name> is the bare file name: no folder, no extension. The file
+% is resolved inside figures/, preferring .pdf, then .png, then
+% .jpeg, then .jpg. A name that matches nothing degrades to a
+% placeholder box rather than failing the build.
+%
+% M/S/L map onto real floats -- figure/table for M, and the
+% double-column figure*/table* for S and L, which is what makes
+% them span the sidebar. paracol supports both (it carries its own
+% \pcol@floatplacement and spanning-float machinery), and the
+% figure counter is shared across columns by section 19 above, so
+% numbering follows source order. \label goes straight after
+% \caption inside the float, where \@currentlabel is correct.
+
+\newif\ifRBRHfigfound
+\newcommand{\RBRHfigpath}{}
+
+% Resolve figures/<name> against the supported extensions, in
+% order of preference.
+\newcommand{\RBRHfindfigure}[1]{%
+  \IfFileExists{figures/#1.pdf}%
+    {\RBRHfigfoundtrue \def\RBRHfigpath{figures/#1.pdf}}%
+    {\IfFileExists{figures/#1.png}%
+      {\RBRHfigfoundtrue \def\RBRHfigpath{figures/#1.png}}%
+      {\IfFileExists{figures/#1.jpeg}%
+        {\RBRHfigfoundtrue \def\RBRHfigpath{figures/#1.jpeg}}%
+        {\IfFileExists{figures/#1.jpg}%
+          {\RBRHfigfoundtrue \def\RBRHfigpath{figures/#1.jpg}}%
+          {\RBRHfigfoundfalse \def\RBRHfigpath{}}}}}%
+}
+
+% Placeholder for a missing file: gray box in golden ratio
+% (height = width / 1.618) carrying a red notice. \detokenize
+% keeps names containing "_" printable.
+\newlength{\RBRHfigwidth}
+\newlength{\RBRHfigheight}
+\newcommand{\RBRHmissingfigure}[2]{%
+  \setlength{\RBRHfigwidth}{#1}%
+  \setlength{\RBRHfigheight}{\dimexpr\RBRHfigwidth*1000/1618\relax}%
+  \begingroup
+    \setlength{\fboxsep}{0pt}%
+    \colorbox{lightgray}{%
+      \begin{minipage}[c][\RBRHfigheight][c]{\RBRHfigwidth}%
+        \centering
+        \textcolor{red}{\sffamily\small
+          Figure \texttt{\detokenize{#2}} not found}%
+      \end{minipage}%
+    }%
+  \endgroup
+}
+
+% The image at #1 wide, or the placeholder if it is missing.
+\newcommand{\RBRHfigbody}[2]{%
+  \ifRBRHfigfound
+    \includegraphics[width=#1]{\RBRHfigpath}%
+  \else
+    \RBRHmissingfigure{#1}{#2}%
+  \fi
+}
+
+% --- M: text width ---
+\NewDocumentCommand{\FigureM}{O{t} m m m}{%
+  \begin{figure}[#1]
+    \centering
+    \RBRHfindfigure{#2}%
+    \RBRHfigbody{\linewidth}{#2}%
+    \caption{#3}\label{#4}%
+  \end{figure}%
+}
+
+% --- L: full width, margin to margin ---
+\NewDocumentCommand{\FigureL}{O{t} m m m}{%
+  \begin{figure*}[#1]
+    \centering
+    \RBRHfindfigure{#2}%
+    \RBRHfigbody{\textwidth}{#2}%
+    \caption{#3}\label{#4}%
+  \end{figure*}%
+}
+
+% --- S: small, caption beside the image, spanning the sidebar ---
+% The image width is captured BEFORE the float opens, while
+% \linewidth still means the text column: inside a double-column
+% float LaTeX widens it to \textwidth. The float body is typeset
+% here at the call site, so the captured value is the right one.
+\NewDocumentCommand{\FigureS}{O{t} O{0.67} m m m}{%
+  \setlength{\smallfigfixedwidth}{#2\linewidth}%
+  \begin{figure*}[#1]
+    \RBRHfindfigure{#3}%
+    \setlength{\sidecapimgwidth}{\smallfigfixedwidth}%
+    \setlength{\sidecapgap}{6mm}%
+    \setlength{\sidecapwidth}{\textwidth}%
+    \addtolength{\sidecapwidth}{-\sidecapimgwidth}%
+    \addtolength{\sidecapwidth}{-\sidecapgap}%
+    \noindent
+    % \vspace{0pt} as the first thing in each minipage is what makes
+    % [t] align the TOPS. Without it, [t] aligns first baselines, and
+    % a minipage holding just a graphic has its baseline at the
+    % graphic's bottom -- which dropped the caption to the foot of
+    % the image instead of level with its top. \abovecaptionskip is
+    % zeroed for the same reason: it is meant to separate a figure
+    % from a caption printed below it, not beside it.
+    \begin{minipage}[t]{\sidecapwidth}
+      \vspace{0pt}%
+      \setlength{\abovecaptionskip}{0pt}%
+      \caption{#4}\label{#5}%
+    \end{minipage}%
+    \hspace{\sidecapgap}%
+    \begin{minipage}[t]{\sidecapimgwidth}
+      \vspace{0pt}%
+      \RBRHfigbody{\linewidth}{#3}%
+    \end{minipage}%
+  \end{figure*}%
+}
+
+% --- Tables: caption above the body, per table convention ---
+% The body is wrapped in threeparttable, so the caption and any
+% notes take the width of the tabular rather than running wider,
+% and authors can add a notes block without extra scaffolding:
+%
+%   \begin{TableM}{caption}{label}
+%     \begin{tabular}{ll} ... \end{tabular}
+%     \begin{tablenotes}
+%       \item Note text.
+%     \end{tablenotes}
+%   \end{TableM}
+\NewDocumentEnvironment{TableM}{O{t} m m}{%
+  \begin{table}[#1]
+    \centering
+    \begin{threeparttable}
+      \caption{#2}\label{#3}%
+}{%
+    \end{threeparttable}
+  \end{table}%
+}
+
+\NewDocumentEnvironment{TableL}{O{t} m m}{%
+  \begin{table*}[#1]
+    \centering
+    \begin{threeparttable}
+      \caption{#2}\label{#3}%
+}{%
+    \end{threeparttable}
+  \end{table*}%
+}

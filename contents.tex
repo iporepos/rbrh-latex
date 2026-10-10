@@ -1,0 +1,419 @@
+% ==============================================================
+% contents.tex — write your paper here
+% ==============================================================
+% AUTHORS. This is the file you edit day to day, together with
+% article.toml (title, abstracts, keywords, highlights),
+% authors.toml and references.bib.
+%
+% It begins at the first section: the whole cover -- journal
+% masthead, title, author list, abstracts and the sidebar -- is
+% generated from the TOML files, so there is no front matter to
+% maintain here.
+%
+% It ships as a working skeleton of a real article: Introduction,
+% Methods, Results, Conclusions and two appendices. The Methods
+% section doubles as the manual -- its subsections demonstrate
+% every feature the template provides (citations, equations,
+% figures, tables). Replace the blind text with your own writing
+% and delete whatever you don't need.
+% ==============================================================
+
+% ==============================================================
+% 1. INTRODUCTION
+% ==============================================================
+\section{Introduction} \label{sec:introduction}
+
+Between the end of April and the beginning of May 2024, heavy
+rains caused extraordinary flooding in southern Brazil. The
+largest floods and landslides ever observed occurred along
+several rivers in the state of Rio Grande do Sul, such as the
+Jacu\'i, Taquari, Ca\'i, Sinos and Gua\'iba
+\parencite{nytimes2024}. The Patos Lagoon, which ultimately
+receives the water of all those rivers, also reached the highest
+levels ever recorded. In the state's capital, Porto Alegre, the
+Gua\'iba flood exceeded the maximum level observed during the
+traumatic flood of 1941 \parencite{possa2022b,silveira2023}, with
+even more devastating consequences because the flood protection
+system, built in the 1970 decade, was unable to prevent the water
+from entering the city.
+
+The hydrological disaster occurred in four forms: (1) mass
+movements in the mountains, (2) flash floods in rivers in the
+transition between the mountains and the plains, (3) relatively
+slower and long-lasting flooding along the densely populated
+areas close to the lowland rivers, where the failure of the flood
+protection systems intensified the impacts, and (4) slow flooding
+throughout the margins of the Patos Lagoon.
+
+The exceptional hydrological disaster of April--May 2024 in
+southern Brazil not only marks new records of flooding in several
+rivers in the region; it is also the most extensive landslide
+event ever observed in Brazil
+\parencite{cemaden2024a,andrades2024}. Hundreds of thousands of
+people were directly affected by the floods, which inundated more
+than 15,000~km\textsuperscript{2}. Fatal victims are at least
+183, and 27 people are still reported missing, five months after
+the disaster \parencite{rs2024d}.
+
+The 2024 extreme hydrological event occurred a few months after
+other noteworthy rainfall-related disasters in Brazil
+\parencite{marengo2023a,marengo2023b,marengo2024}, and only eight
+months after a catastrophic flood hit the same southern Brazilian
+region in September 2023 \parencite{alvala2024,moraes2024},
+suggesting that the region is passing through a particular
+flood-rich period. This recent flood-rich period in southern
+Brazil seems to be in accordance with already reported trends in
+observed rainfall and floods during the last decades
+\parencite{chagas2022} and with projections of possible
+hydrological impacts of climate change in southern Brazil for the
+twenty-first century \parencite{breda2023,hodnebrog2022}.
+
+Given its profound, widespread and long-lasting impacts, the
+disaster of April--May 2024 can be considered the biggest natural
+hydrological disaster in the history of Brazil. It also gives an
+example of an event that can be called an ``impossible flood'',
+as suggested by \textcite{montanari2024}, because it exceeded the
+expectations based on historical experience, and because it
+exposed the consequences of the occurrence of an event whose
+probability of occurrence was considered too small to act, even
+by the flood managers \parencite{allasia2015}.
+
+The objective of this study is to document this exceptional
+hydrological event and the disaster that followed. We aimed to
+describe the process chain of the April--May 2024 hydrological
+disaster in South Brazil, from causes to impacts, focusing on
+what made the impacts so exceptional.
+
+In our understanding, adequately documenting extraordinary
+hydrological events helps society learn from those events, by
+understanding patterns and causes. This learning process helps
+reduce vulnerability and increase resilience to future disasters
+\parencite{zanandrea2023}. Other examples of papers that describe
+extraordinary floods are given by \textcite{gaume2004},
+\textcite{dimitriou2024}, \textcite{mohr2023},
+\textcite{nanditha2023} and \textcite{kreibich2017}. In the
+Brazilian context, accounts of other extraordinary hydrological
+events have been recently organized by \textcite{zanandrea2023}.
+We also understand that a detailed description and study of such
+an extraordinary flood event is not of exclusive interest to the
+affected region, because the lessons that can be drawn from it
+are not limited to the basin or river in which it occurred but
+can be extremely relevant to an entire large region, as suggested
+by \textcite{merz2024}.
+
+The paper is structured as follows: \Cref{sec:methods} describes
+the data sets and methods used. \Cref{sec:results} describes the
+event in terms of meteorological and hydrological aspects and its
+impacts. Finally, \Cref{sec:conclusions} discusses and summarizes
+the main results and draws conclusions.
+
+% ==============================================================
+% 2. METHODS
+% ==============================================================
+% This section doubles as the template's manual: each subsection
+% demonstrates one feature. Keep the structure, replace the
+% content.
+\section{Methods} \label{sec:methods}
+
+\lipsum[4]
+
+\subsection{Citing sources} \label{sec:citations}
+
+References live in \texttt{references.bib} and are formatted in
+APA style with author--year citations. There are two forms, and
+the choice is grammatical rather than cosmetic.
+
+Use \verb|\parencite{key}| when the citation supports a statement
+but is not part of the sentence, so it belongs in parentheses:
+the Patos Lagoon is the largest choked lagoon in South America
+\parencite{chagas2022}. Use \verb|\textcite{key}| when the
+authors \emph{are} the subject of the sentence, so their names
+need to read as words: \textcite{montanari2024} calls such an
+event an ``impossible flood''.
+
+Both take several keys at once, separated by commas ---
+\verb|\parencite{a,b}| --- and biblatex orders and punctuates the
+group for you \parencite{marengo2023a,marengo2023b,marengo2024}.
+Every citation is a clickable cross-reference to its entry in the
+reference list.
+
+Cross-references to document elements use \verb|\Cref{label}|,
+which supplies the word as well as the number
+(\Cref{sec:introduction}), and \verb|\cref{label}| inside a
+sentence, as in \cref{sec:tables} below. Give every figure,
+table, equation and section a label and never type a number by
+hand.
+
+\lipsum[5-8]
+
+\subsection{Mathematical features} \label{sec:equations}
+
+Inline mathematics is written between dollar signs, as in the
+continuity relation $Q = v\,A$, where $Q$ is discharge, $v$ mean
+velocity and $A$ the cross-sectional area. Keep short expressions
+inline; give anything you need to refer to a display of its own.
+
+Numbered display equations go in an \texttt{equation} environment
+with a label, so they can be cross-referenced:
+
+\begin{equation}
+    \label{eq:manning}
+    v = \frac{1}{n}\,R^{2/3}\,S^{1/2}.
+\end{equation}
+
+\Cref{eq:manning} is referenced by label, so its number stays
+correct however many equations are inserted before it. Use
+\verb|\Cref| at the start of a sentence and \verb|\cref| inside
+one.
+
+An unnumbered display uses the starred form, for a step that
+needs room but never gets referred to:
+
+\begin{equation*}
+    R = \frac{A}{P}.
+\end{equation*}
+
+Related equations that belong together can share a number and be
+lettered individually with \texttt{subequations}:
+
+\begin{subequations}
+    \label{eq:balance}
+    \begin{align}
+        \frac{\partial A}{\partial t} + \frac{\partial Q}{\partial x} &= q_{\ell}, \label{eq:balance:mass} \\
+        \frac{\partial Q}{\partial t} + \frac{\partial}{\partial x}\!\left(\frac{Q^{2}}{A}\right) &= gA\left(S_{0} - S_{f}\right). \label{eq:balance:momentum}
+    \end{align}
+\end{subequations}
+
+\Cref{eq:balance} is the pair; \cref{eq:balance:mass} and
+\cref{eq:balance:momentum} are its parts, numbered \textbf{a} and
+\textbf{b} automatically.
+
+Systems are aligned on a chosen character with \texttt{align},
+one \verb|&| per alignment point:
+
+\begin{align}
+    \label{eq:system}
+    S_{f}   &= \frac{n^{2} v^{2}}{R^{4/3}}, &
+    F_{r}   &= \frac{v}{\sqrt{g\,h}}, \\
+    \tau_0  &= \rho\,g\,R\,S_{f},           &
+    \mathrm{Re} &= \frac{v\,R}{\nu}. \nonumber
+\end{align}
+
+Symbols take the usual variants: Greek letters $\alpha$, $\beta$,
+$\lambda$, $\mu$, $\sigma$, $\Delta$, $\Omega$; decorated forms
+$\bar{x}$, $\hat{y}$, $\tilde{z}$, $\dot{Q}$, $\vec{u}$; calligraphic
+$\mathcal{R}$, blackboard $\mathbb{R}$, bold $\mathbf{A}$ and
+roman subscripts such as $Q_{\mathrm{peak}}$. Operators and
+relations behave as expected: $\sum$, $\prod$, $\int$,
+$\partial$, $\nabla$, $\leq$, $\approx$, $\propto$, $\in$.
+
+Theorem-like environments are available for formal statements,
+and number independently of the equations:
+
+\begin{definition}[Specific energy]
+    \label{def:energy}
+    For a channel of depth $h$ carrying mean velocity $v$, the
+    specific energy is $E = h + v^{2}/2g$.
+\end{definition}
+
+\begin{theorem}[Critical flow]
+    \label{thm:critical}
+    Specific energy is minimised when $F_{r} = 1$.
+\end{theorem}
+
+\begin{proof}
+    Differentiate $E$ from \cref{def:energy} with respect to $h$
+    at fixed discharge and set $\mathrm{d}E/\mathrm{d}h = 0$;
+    the result rearranges to $v^{2} = g\,h$, which is
+    $F_{r} = 1$ by \cref{eq:system}.
+\end{proof}
+
+\begin{remark}
+    \texttt{lemma}, \texttt{corollary}, \texttt{example} and
+    \texttt{remark} are defined alongside these, and all follow
+    the document language.
+\end{remark}
+
+\lipsum[5-8]
+
+\subsection{Developing figures} \label{sec:figures}
+
+Figures come in three sizes, each a single macro. Give the image
+file's bare name --- no folder, no extension --- and the template
+looks it up in \texttt{figures/}, preferring \texttt{.pdf}, then
+\texttt{.png}, then \texttt{.jpeg}, then \texttt{.jpg}:
+
+\begin{itemize}
+  \item \verb|\FigureM{name}{caption}{label}| --- text width,
+        as in \Cref{fig:forecast}.
+  \item \verb|\FigureS{name}{caption}{label}| --- small, with the
+        caption set beside the image and spilling into the
+        sidebar column, as in \Cref{fig:stage}. Pass a second
+        optional argument to change its width, for example
+        \verb|\FigureS[t][0.5]{...}|; the default is 0.67 of the
+        text width.
+  \item \verb|\FigureL{name}{caption}{label}| --- full width,
+        margin to margin, as in \Cref{fig:damage}.
+\end{itemize}
+
+Every one of them takes an optional float position first, so
+\verb|\FigureM[b]{...}| sends that figure to the bottom of a
+page. The default is \texttt{t}, the top.
+
+\FigureM{figure_05}{%
+  Seven-day accumulated precipitation forecasts from the ECMWF
+  and GFS global models for the river basins of Rio Grande do
+  Sul. Darker shading indicates higher forecast accumulation;
+  both models anticipated the heavy rainfall that preceded the
+  flood.
+  \;\textbf{a}\;---\;ECMWF, forecast issued 27 April.
+  \;\textbf{b}\;---\;GFS, forecast issued 27 April.
+  \;\textbf{c}\;---\;ECMWF, forecast issued 29 April.
+  \;\textbf{d}\;---\;GFS, forecast issued 29 April.%
+}{fig:forecast}
+
+\lipsum[5-8]
+
+\FigureS{figure_15}{%
+  River stage (water level) from 1 May to 3 June 2024 at six
+  gauging stations across the Rio Grande do Sul lowlands and
+  coastal lagoon system (Arambar\'e, S\~ao Louren\c{c}o,
+  Laranjal, Rio Grande, Pelotas Porto and CATSUL), showing the
+  sustained high-water period that followed the flood event.%
+}{fig:stage}
+
+\lipsum[5-8]
+
+\FigureL{figure_07}{%
+  Aerial and ground documentation of slope failures and
+  structural damage following the April--May 2024 event.
+  \;\textbf{a}\;---\;debris-flow scars draining into a stream channel.
+  \;\textbf{b}\;---\;hillslope cracking upstream of a residential area.
+  \;\textbf{c}\;---\;a large landslide scar above a rural property.
+  \;\textbf{d}\;---\;structural cracking in a house wall.
+  \;\textbf{e}\;---\;a building destroyed by a landslide.%
+}{fig:damage}
+
+\lipsum[5-8]
+
+If an image file cannot be found, the build still succeeds and a
+placeholder appears in its place, naming the file it looked for
+--- see \Cref{fig:missing}. A missing or misspelled image is
+therefore visible in the PDF instead of stopping the compile.
+Delete this example from your own paper.
+
+\FigureM{figure_99}{%
+  Placeholder shown when an image file cannot be found in
+  \texttt{figures/}. The box keeps the golden ratio of the
+  requested width.%
+}{fig:missing}
+
+\lipsum[5-8]
+
+\subsection{Presenting tables} \label{sec:tables}
+
+Tables come in two sizes and are written as environments, so the
+tabular material goes in the body and the caption is supplied as
+an argument. The caption is placed above the table, following the
+usual convention:
+
+\begin{itemize}
+  \item \verb|\begin{TableM}{caption}{label}| --- text width,
+        as in \Cref{tbl:stations}.
+  \item \verb|\begin{TableL}{caption}{label}| --- full width,
+        margin to margin, for tables with many columns, as in
+        \Cref{tbl:events}.
+\end{itemize}
+
+Both accept the same optional position argument as the figure
+macros, defaulting to \texttt{t}. Use \texttt{booktabs} rules
+(\verb|\toprule|, \verb|\midrule|, \verb|\bottomrule|) and avoid
+vertical lines. Footnotes to a table go in a \verb|tablenotes|
+block at the end of the environment, keyed with \verb|\tnote{a}|
+in the cell they annotate.
+
+\begin{TableM}{%
+  Gauging stations used in this study, with drainage area and the
+  peak stage recorded during the event.%
+}{tbl:stations}
+\scriptsize
+\sffamily
+% tabularx with L columns fills \linewidth exactly, which keeps
+% the caption and notes flush with the text column.
+\begin{tabularx}{\linewidth}{LLLL}
+\toprule
+\textbf{Station} & \textbf{River} & \textbf{Area (km\textsuperscript{2})} & \textbf{Peak (m)} \\
+\midrule
+Arambaré          & Patos Lagoon  & 180{,}000 & 2.6\tnote{a} \\
+São Lourenço      & Patos Lagoon  & 180{,}000 & 2.8 \\
+Laranjal          & Patos Lagoon  & 180{,}000 & 2.8 \\
+Pelotas Porto     & São Gonçalo   &  4{,}800  & 3.0 \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}
+  \item[\textit{a}] Notes go in a \texttt{tablenotes} block and
+  wrap to the width of the table above them.
+\end{tablenotes}
+\end{TableM}
+
+\lipsum[11-13]
+
+The large variant spans the full width, which makes room for
+tables that would otherwise be cramped in the text column.
+
+
+
+\begin{TableL}{%
+  Summary of the sub-basins affected by the April--May 2024
+  event, with rainfall totals, peak discharge and the recurrence
+  interval estimated for each.%
+}{tbl:events}
+\scriptsize
+\sffamily
+\begin{tabularx}{\linewidth}{LLLLLL}
+\toprule
+\textbf{Sub-basin} & \textbf{Area (km\textsuperscript{2})} &
+\textbf{Rainfall (mm)} & \textbf{Peak (m\textsuperscript{3}/s)} &
+\textbf{Date} & \textbf{Return period (years)} \\
+\midrule
+Taquari     &  26{,}500 & 520 & 14{,}000 & 2024-05-02 & $>$100 \\
+Ca\'i       &   4{,}900 & 480 &  5{,}200 & 2024-05-01 & $>$100 \\
+Sinos       &   3{,}700 & 460 &  4{,}100 & 2024-05-03 & $>$100 \\
+Jacu\'i     &  71{,}600 & 410 & 19{,}500 & 2024-05-04 & $>$100\tnote{a} \\
+Gravata\'i  &   2{,}000 & 390 &    980   & 2024-05-05 &    50  \\
+Taquari     &  26{,}500 & 520 & 14{,}000 & 2024-05-02 & $>$100 \\
+Ca\'i       &   4{,}900 & 480 &  5{,}200 & 2024-05-01 & $>$100 \\
+Sinos       &   3{,}700 & 460 &  4{,}100 & 2024-05-03 & $>$100 \\
+Jacu\'i     &  71{,}600 & 410 & 19{,}500 & 2024-05-04 & $>$100\tnote{a} \\
+Gravata\'i  &   2{,}000 & 390 &    980   & 2024-05-05 &    50  \\
+Taquari     &  26{,}500 & 520 & 14{,}000 & 2024-05-02 & $>$100 \\
+Ca\'i       &   4{,}900 & 480 &  5{,}200 & 2024-05-01 & $>$100 \\
+Sinos       &   3{,}700 & 460 &  4{,}100 & 2024-05-03 & $>$100 \\
+Jacu\'i     &  71{,}600 & 410 & 19{,}500 & 2024-05-04 & $>$100\tnote{a} \\
+Gravata\'i  &   2{,}000 & 390 &    980   & 2024-05-05 &    50  \\
+\bottomrule
+\end{tabularx}
+\begin{tablenotes}
+  \item[\textit{a}] Return periods above 100 years are reported as
+  a lower bound, the record being too short to resolve them.
+\end{tablenotes}
+\end{TableL}
+
+
+
+\lipsum[14]
+
+% ==============================================================
+% 3. RESULTS
+% ==============================================================
+\section{Results} \label{sec:results}
+
+\lipsum[15-18]
+
+% ==============================================================
+% 4. CONCLUSIONS
+% ==============================================================
+\section{Conclusions} \label{sec:conclusions}
+
+\lipsum[19-23]
+
